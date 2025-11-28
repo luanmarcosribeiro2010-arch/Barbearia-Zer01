@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barbearia Zero 1 - Agendamentos</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #f1c40f;
+    }
+    header {
+        background: #111;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        border-bottom: 3px solid #f1c40f;
+    }
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+    }
+    h2 {
+        border-left: 5px solid #f1c40f;
+        padding-left: 10px;
+    }
+    .service-list div {
+        background: #111;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: 8px;
+        border: 1px solid #f1c40f;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    .slot {
+        padding: 12px;
+        text-align: center;
+        background: #111;
+        border: 1px solid #f1c40f;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .taken {
+        background: #333;
+        text-decoration: line-through;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        border-top: 2px solid #f1c40f;
+    }
+</style>
+</head>
+<body>
+
+<header>Barbearia Zero 1</header>
+
+<div class="container">
+
+<h2>Serviços</h2>
+<div class="service-list">
+    <div>Degradê - R$35</div>
+    <div>Social - R$20</div>
+    <div>Tesoura - R$35</div>
+    <div>1 pente - R$20</div>
+    <div>Bigode - R$5</div>
+    <div>Degradê na barba - R$25</div>
+    <div>1 pente na barba - R$25</div>
+    <div>Barba na toalha - R$35</div>
+    <div>Cabelo + barba na toalha - R$40 a R$70</div>
+    <div>Hidratação - R$10</div>
+    <div>Pigmentação - R$20</div>
+    <div>Luzes - R$70</div>
+    <div>Platinado - R$90</div>
+    <div>Botox - R$70</div>
+</div>
+
+<h2>Horários Disponíveis</h2>
+<div class="grid" id="slots">
+</div>
+
+<script>
+const fixedSlots = [
+ "09:00","09:30","10:00","10:30","11:00","11:30",
+ "14:00","14:30","15:00","15:30","16:00","16:30",
+ "17:00","17:30","18:00","18:30","19:00","19:30"
+];
+
+let takenSlots = [];  // será salvo no LocalStorage
+
+if(localStorage.getItem("takenSlots")){
+    takenSlots = JSON.parse(localStorage.getItem("takenSlots"));
+}
+
+const slotContainer = document.getElementById("slots");
+
+fixedSlots.forEach(time => {
+    const div = document.createElement("div");
+    div.classList.add("slot");
+    div.textContent = time;
+
+    if(takenSlots.includes(time)){
+        div.classList.add("taken");
+    } else {
+        div.onclick = () => {
+            if(confirm("Confirmar agendamento para " + time + "?")){
+                takenSlots.push(time);
+                localStorage.setItem("takenSlots", JSON.stringify(takenSlots));
+                div.classList.add("taken");
+            }
+        };
+    }
+
+    slotContainer.appendChild(div);
+});
+</script>
+
+</div>
+
+<footer>© 2025 Barbearia Zero 1</footer>
+
+</body>
+</html>
